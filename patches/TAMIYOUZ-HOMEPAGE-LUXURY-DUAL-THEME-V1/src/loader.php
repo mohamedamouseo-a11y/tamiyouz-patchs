@@ -2,9 +2,10 @@
 /**
  * Plugin Name: Tamiyouz Homepage Luxury V1
  * Description: Preview-first premium RTL homepage for Tamiyouz with light/dark mode, AI/software direction and hero video support.
- * Version: 1.0.0
+ * Version: 1.1.0
  * Author: Tamiyouz
  * Marker: TAMIYOUZ-HOMEPAGE-LUXURY-DUAL-THEME-V1
+ * Asset Fix: INLINE_ASSETS_V1_1
  */
 
 if (!defined('ABSPATH')) {
@@ -12,8 +13,7 @@ if (!defined('ABSPATH')) {
 }
 
 define('TAMIYOUZ_HOME_V1_DIR', __DIR__ . '/tamiyouz-homepage-v1');
-define('TAMIYOUZ_HOME_V1_URL', content_url('/mu-plugins/tamiyouz-homepage-v1'));
-define('TAMIYOUZ_HOME_V1_VERSION', '1.0.0');
+define('TAMIYOUZ_HOME_V1_VERSION', '1.1.0');
 
 function tamiyouz_home_v1_is_preview(): bool {
     return isset($_GET['tamiyouz_preview'])
@@ -46,29 +46,52 @@ add_filter('template_include', function ($template) {
     return $template;
 }, 999);
 
-add_action('wp_enqueue_scripts', function () {
+/*
+ * Host-safe asset delivery.
+ *
+ * Some managed WordPress hosts block direct HTTP access to wp-content/mu-plugins.
+ * The homepage therefore injects its own trusted CSS/JS from disk only when the
+ * preview/published homepage is active, avoiding external /mu-plugins asset URLs.
+ */
+add_action('wp_head', function () {
     if (!tamiyouz_home_v1_is_active()) {
         return;
     }
 
     $css_path = TAMIYOUZ_HOME_V1_DIR . '/assets/home.css';
-    $js_path  = TAMIYOUZ_HOME_V1_DIR . '/assets/home.js';
+    if (!is_readable($css_path)) {
+        return;
+    }
 
-    wp_enqueue_style(
-        'tamiyouz-home-v1',
-        TAMIYOUZ_HOME_V1_URL . '/assets/home.css',
-        [],
-        is_file($css_path) ? (string) filemtime($css_path) : TAMIYOUZ_HOME_V1_VERSION
-    );
+    $css = file_get_contents($css_path);
+    if ($css === false) {
+        return;
+    }
 
-    wp_enqueue_script(
-        'tamiyouz-home-v1',
-        TAMIYOUZ_HOME_V1_URL . '/assets/home.js',
-        [],
-        is_file($js_path) ? (string) filemtime($js_path) : TAMIYOUZ_HOME_V1_VERSION,
-        true
-    );
-}, 999);
+    echo "\n<style id=\"tamiyouz-home-v1-css\" data-tamiyouz-version=\"" . esc_attr(TAMIYOUZ_HOME_V1_VERSION) . "\">\n";
+    echo $css; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- trusted local patch asset.
+    echo "\n</style>\n";
+}, 100);
+
+add_action('wp_footer', function () {
+    if (!tamiyouz_home_v1_is_active()) {
+        return;
+    }
+
+    $js_path = TAMIYOUZ_HOME_V1_DIR . '/assets/home.js';
+    if (!is_readable($js_path)) {
+        return;
+    }
+
+    $js = file_get_contents($js_path);
+    if ($js === false) {
+        return;
+    }
+
+    echo "\n<script id=\"tamiyouz-home-v1-js\" data-tamiyouz-version=\"" . esc_attr(TAMIYOUZ_HOME_V1_VERSION) . "\">\n";
+    echo $js; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- trusted local patch asset.
+    echo "\n</script>\n";
+}, 100);
 
 add_filter('body_class', function ($classes) {
     if (tamiyouz_home_v1_is_active()) {
