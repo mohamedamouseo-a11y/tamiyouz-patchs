@@ -2,42 +2,40 @@
 
 Safe, reviewable patches for the Tamiyouz WordPress website.
 
-## Homepage V1
+## Current homepage patch
 
-`TAMIYOUZ-HOMEPAGE-THEGEM-AI-LUXURY-V1.sh` installs an original premium RTL light-mode homepage inspired by high-end editorial WordPress showcase patterns, with an AI/software visual direction and optional hero video.
+### TAMIYOUZ-HOMEPAGE-LUXURY-DUAL-THEME-V1
 
-The patch is isolated as a WordPress MU plugin and does **not** modify the active theme or database schema.
+Path:
 
-### Preview-first workflow
+`patches/TAMIYOUZ-HOMEPAGE-LUXURY-DUAL-THEME-V1/`
+
+Approved direction:
+
+- Premium editorial light-first homepage.
+- Full Light / Dark mode toggle.
+- Cinematic Hero Video support.
+- AI + Software + Digital Growth positioning.
+- Neutral visual language with no country-specific styling.
+- Arabic RTL and responsive behavior.
+- Preview-first installation as an isolated MU-plugin.
+- No active-theme edits and no database schema changes.
+
+Install:
 
 ```bash
-bash TAMIYOUZ-HOMEPAGE-THEGEM-AI-LUXURY-V1.sh
+cd patches/TAMIYOUZ-HOMEPAGE-LUXURY-DUAL-THEME-V1
+WP_ROOT=/path/to/wordpress bash apply.sh
 ```
 
-After apply, admins can preview the new homepage with:
+Private admin preview:
 
 `/?tamiyouz_preview=1`
 
-To publish it:
+Publish only after approval:
 
 ```bash
-wp option update tamiyouz_homepage_v1_enabled 1
+WP_ROOT=/path/to/wordpress bash apply.sh --publish
 ```
 
-To configure the hero video URL:
-
-```bash
-wp option update tamiyouz_homepage_v1_hero_video 'https://example.com/path/hero.mp4'
-```
-
-To disable the new homepage without removing files:
-
-```bash
-wp option update tamiyouz_homepage_v1_enabled 0
-```
-
-Rollback files:
-
-```bash
-bash TAMIYOUZ-HOMEPAGE-THEGEM-AI-LUXURY-V1.sh --rollback
-```
+See the patch README for hero-video configuration and rollback details.
