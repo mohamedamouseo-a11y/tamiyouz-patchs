@@ -116,3 +116,15 @@ HERO_VIDEO=CONFIGURABLE
 THEME_FILES_CHANGED=NO
 DB_SCHEMA_CHANGED=NO
 ```
+
+
+## Host compatibility fix — V1.1
+
+Some managed hosts block direct HTTP requests to files under `wp-content/mu-plugins`.  
+V1.1 avoids that entirely:
+
+- `home.css` is injected inline from the server filesystem in `wp_head`.
+- `home.js` is injected inline from the server filesystem in `wp_footer`.
+- No browser request to `/wp-content/mu-plugins/.../home.css` or `home.js` is required.
+- This specifically resolves preview cases where direct MU-plugin asset URLs return 404/403.
+- The public homepage still remains unchanged until explicitly published.
