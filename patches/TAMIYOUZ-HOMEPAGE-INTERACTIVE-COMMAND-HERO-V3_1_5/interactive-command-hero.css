@@ -1,0 +1,190 @@
+/* TAMIYOUZ-HOMEPAGE-INTERACTIVE-COMMAND-HERO-V3_1_5 */
+#tyz-home-v21 .tyz-hero__media.tyz-command-hero{
+  --tyz-hx:50%;
+  --tyz-hy:50%;
+  --tyz-rx:0deg;
+  --tyz-ry:0deg;
+  --tyz-p1x:0px;
+  --tyz-p1y:0px;
+  --tyz-p2x:0px;
+  --tyz-p2y:0px;
+  --tyz-p3x:0px;
+  --tyz-p3y:0px;
+  perspective:1100px;
+  transform-style:preserve-3d;
+  cursor:crosshair;
+}
+#tyz-home-v21 .tyz-command-hero > .tyz-hero-media__image{
+  transform-origin:center center!important;
+  transform:perspective(1100px) rotateX(var(--tyz-rx)) rotateY(var(--tyz-ry)) scale(1.035)!important;
+  transition:transform .42s cubic-bezier(.2,.78,.2,1),filter .35s ease!important;
+  will-change:transform;
+}
+#tyz-home-v21 .tyz-command-hero.is-interacting > .tyz-hero-media__image{
+  filter:saturate(1.035) contrast(1.02)!important;
+}
+html[data-tyz-theme="dark"] #tyz-home-v21 .tyz-command-hero.is-interacting > .tyz-hero-media__image{
+  filter:brightness(.87) saturate(.98) contrast(1.04)!important;
+}
+#tyz-home-v21 .tyz-command-hero__fx{
+  position:absolute;
+  inset:0;
+  z-index:30;
+  overflow:hidden;
+  border-radius:inherit;
+  pointer-events:none;
+  isolation:isolate;
+}
+#tyz-home-v21 .tyz-command-hero__spotlight{
+  position:absolute;
+  inset:-2px;
+  z-index:1;
+  opacity:.5;
+  background:radial-gradient(circle 170px at var(--tyz-hx) var(--tyz-hy),rgba(244,211,144,.24),rgba(255,255,255,.05) 38%,transparent 72%);
+  mix-blend-mode:screen;
+  transition:opacity .25s ease;
+}
+#tyz-home-v21 .tyz-command-hero:not(.is-interacting) .tyz-command-hero__spotlight{opacity:.18}
+#tyz-home-v21 .tyz-command-hero__lens{
+  position:absolute;
+  left:var(--tyz-hx);
+  top:var(--tyz-hy);
+  width:92px;
+  height:92px;
+  z-index:5;
+  border:1px solid rgba(227,182,91,.32);
+  border-radius:50%;
+  transform:translate(-50%,-50%) scale(.86);
+  opacity:0;
+  background:radial-gradient(circle at 38% 34%,rgba(255,255,255,.13),rgba(216,169,74,.035) 55%,transparent 70%);
+  box-shadow:0 0 0 1px rgba(255,255,255,.08) inset,0 10px 30px rgba(0,0,0,.08);
+  backdrop-filter:contrast(1.05) saturate(1.06);
+  transition:opacity .2s ease,transform .32s cubic-bezier(.2,.8,.2,1);
+}
+#tyz-home-v21 .tyz-command-hero.is-interacting .tyz-command-hero__lens{
+  opacity:1;
+  transform:translate(-50%,-50%) scale(1);
+}
+#tyz-home-v21 .tyz-command-hero__telemetry{
+  position:absolute;
+  inset:0;
+  z-index:4;
+}
+#tyz-home-v21 .tyz-command-hero__metric{
+  position:absolute;
+  min-width:112px;
+  padding:9px 11px 8px;
+  border:1px solid rgba(255,255,255,.24);
+  border-radius:11px;
+  background:rgba(17,18,20,.66);
+  color:#fff;
+  box-shadow:0 12px 30px rgba(0,0,0,.18);
+  backdrop-filter:blur(10px);
+  transition:transform .3s cubic-bezier(.2,.8,.2,1),opacity .25s ease,border-color .25s ease;
+  opacity:.86;
+}
+#tyz-home-v21 .tyz-command-hero.is-interacting .tyz-command-hero__metric{
+  opacity:1;
+  border-color:rgba(226,178,82,.36);
+}
+#tyz-home-v21 .tyz-command-hero__metric:nth-child(1){
+  left:5%;
+  top:10%;
+  transform:translate3d(var(--tyz-p1x),var(--tyz-p1y),0);
+}
+#tyz-home-v21 .tyz-command-hero__metric:nth-child(2){
+  right:5%;
+  top:18%;
+  transform:translate3d(var(--tyz-p2x),var(--tyz-p2y),0);
+}
+#tyz-home-v21 .tyz-command-hero__metric:nth-child(3){
+  right:7%;
+  bottom:7%;
+  transform:translate3d(var(--tyz-p3x),var(--tyz-p3y),0);
+}
+#tyz-home-v21 .tyz-command-hero__metric small{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  margin-bottom:4px;
+  font-size:6.5px;
+  line-height:1;
+  letter-spacing:.15em;
+  color:rgba(255,255,255,.62);
+  text-transform:uppercase;
+}
+#tyz-home-v21 .tyz-command-hero__metric small b{
+  color:#dcae52;
+  font-size:6px;
+  letter-spacing:.11em;
+}
+#tyz-home-v21 .tyz-command-hero__metric strong{
+  display:block;
+  font:700 16px/1.1 ui-monospace,SFMono-Regular,Menlo,monospace;
+  letter-spacing:-.04em;
+}
+#tyz-home-v21 .tyz-command-hero__metric span{
+  display:block;
+  margin-top:5px;
+  height:2px;
+  border-radius:99px;
+  overflow:hidden;
+  background:rgba(255,255,255,.12);
+}
+#tyz-home-v21 .tyz-command-hero__metric span i{
+  display:block;
+  width:var(--tyz-meter,70%);
+  height:100%;
+  border-radius:inherit;
+  background:linear-gradient(90deg,rgba(207,153,55,.45),#e6b85d);
+  transition:width .72s cubic-bezier(.2,.75,.2,1);
+}
+#tyz-home-v21 .tyz-command-hero__pulse{
+  position:absolute;
+  left:18%;
+  right:18%;
+  bottom:20%;
+  height:1px;
+  z-index:3;
+  opacity:.32;
+  overflow:hidden;
+  background:rgba(219,173,82,.16);
+}
+#tyz-home-v21 .tyz-command-hero__pulse:after{
+  content:"";
+  display:block;
+  width:26%;
+  height:100%;
+  background:linear-gradient(90deg,transparent,#e1ad4f,transparent);
+  animation:tyzHeroDataPulse 2.8s linear infinite;
+}
+@keyframes tyzHeroDataPulse{
+  from{transform:translateX(-120%)}
+  to{transform:translateX(480%)}
+}
+@media (max-width:1180px),(hover:none),(pointer:coarse){
+  #tyz-home-v21 .tyz-hero__media.tyz-command-hero{cursor:default}
+  #tyz-home-v21 .tyz-command-hero > .tyz-hero-media__image{
+    transform:scale(1.02)!important;
+  }
+  #tyz-home-v21 .tyz-command-hero__lens,
+  #tyz-home-v21 .tyz-command-hero__spotlight{display:none}
+  #tyz-home-v21 .tyz-command-hero__metric{
+    transform:none!important;
+    opacity:.9;
+  }
+}
+@media (max-width:760px){
+  #tyz-home-v21 .tyz-command-hero__metric{min-width:88px;padding:7px 8px}
+  #tyz-home-v21 .tyz-command-hero__metric strong{font-size:13px}
+  #tyz-home-v21 .tyz-command-hero__metric:nth-child(1){left:3%;top:6%}
+  #tyz-home-v21 .tyz-command-hero__metric:nth-child(2){right:3%;top:10%}
+  #tyz-home-v21 .tyz-command-hero__metric:nth-child(3){right:4%;bottom:5%}
+}
+@media (prefers-reduced-motion:reduce){
+  #tyz-home-v21 .tyz-command-hero > .tyz-hero-media__image{transform:none!important;transition:none!important}
+  #tyz-home-v21 .tyz-command-hero__metric{transform:none!important;transition:none!important}
+  #tyz-home-v21 .tyz-command-hero__pulse:after{animation:none!important}
+  #tyz-home-v21 .tyz-command-hero__lens,#tyz-home-v21 .tyz-command-hero__spotlight{display:none!important}
+}
