@@ -1,0 +1,102 @@
+/* TAMIYOUZ-HOMEPAGE-ABOUT-RENDER-COMPOSITION-FIX-V3_2_1 */
+
+/* Approved composition: visual LEFT, Arabic copy RIGHT. */
+#tyz-home-v21 .tyz-about__grid{
+  display:grid!important;
+  grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr)!important;
+  grid-template-areas:"visual copy"!important;
+  direction:ltr!important;
+  gap:clamp(44px,6vw,88px)!important;
+  align-items:center!important;
+}
+#tyz-home-v21 .tyz-about__copy{
+  grid-area:copy!important;
+  direction:rtl!important;
+  justify-self:stretch!important;
+  max-width:620px!important;
+}
+#tyz-home-v21 .tyz-about__visual{
+  grid-area:visual!important;
+  direction:ltr!important;
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  transform:none!important;
+  min-width:0!important;
+  width:100%!important;
+  position:relative!important;
+  z-index:2!important;
+}
+#tyz-home-v21 .tyz-about__visual.tyz-reveal{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  transform:none!important;
+}
+#tyz-home-v21 .tyz-about-media--v32{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  position:relative!important;
+  width:100%!important;
+  min-height:430px!important;
+  aspect-ratio:4/3!important;
+  margin:0!important;
+  overflow:hidden!important;
+  border-radius:34px 12px 34px 34px!important;
+  background:
+    url("/wp-content/mu-plugins/tamiyouz-homepage-v2-1/assets/tamiyouz-about-v3-2.webp")
+    center center/cover no-repeat!important;
+  border:1px solid rgba(196,139,39,.16)!important;
+  box-shadow:0 30px 78px rgba(64,44,14,.16)!important;
+  isolation:isolate!important;
+}
+#tyz-home-v21 .tyz-about-media--v32 img{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  position:relative!important;
+  z-index:2!important;
+  width:100%!important;
+  height:100%!important;
+  min-height:430px!important;
+  object-fit:cover!important;
+  object-position:center center!important;
+}
+#tyz-home-v21 .tyz-about__visual .tyz-office-card{
+  display:none!important;
+}
+html[data-tyz-theme="dark"] #tyz-home-v21 .tyz-about-media--v32{
+  background:
+    url("/wp-content/mu-plugins/tamiyouz-homepage-v2-1/assets/tamiyouz-about-v3-2.webp")
+    center center/cover no-repeat!important;
+  border-color:rgba(218,177,92,.18)!important;
+  box-shadow:0 34px 90px rgba(0,0,0,.34)!important;
+}
+html[data-tyz-theme="dark"] #tyz-home-v21 .tyz-about-media--v32 img{
+  filter:brightness(.90) contrast(1.03)!important;
+}
+@media(max-width:1180px){
+  #tyz-home-v21 .tyz-about__grid{
+    grid-template-columns:1fr!important;
+    grid-template-areas:"copy" "visual"!important;
+    gap:40px!important;
+  }
+  #tyz-home-v21 .tyz-about__copy{
+    max-width:760px!important;
+    margin-inline:auto!important;
+  }
+  #tyz-home-v21 .tyz-about__visual{
+    max-width:880px!important;
+    margin-inline:auto!important;
+  }
+}
+@media(max-width:760px){
+  #tyz-home-v21 .tyz-about-media--v32,
+  #tyz-home-v21 .tyz-about-media--v32 img{
+    min-height:280px!important;
+  }
+  #tyz-home-v21 .tyz-about-media--v32{
+    border-radius:24px 10px 24px 24px!important;
+  }
+}
