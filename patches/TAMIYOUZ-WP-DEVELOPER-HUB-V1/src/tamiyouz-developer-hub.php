@@ -192,7 +192,7 @@ final class Tamiyouz_Developer_Hub_V1 {
         [$items, $counts] = self::classify($local, $remote['files'], is_array($state['base_manifest']) ? $state['base_manifest'] : []);
         $blocked = [];
         foreach ($items as $i) if ($i['status'] === 'conflict' && $action === 'sync') $blocked[] = ['path'=>$i['path'],'reason'=>'Both local and GitHub changed this file.'];
-        $fingerprint = hash('sha256', wp_json_encode([$action,$state['repo'],$state['branch'],$state['prefix'],$remote['head'],array_map(function($v){ return $v['sha']; },$local),array_map(fn($v)=>$v['sha'],$remote['files']]));
+        $fingerprint = hash('sha256', wp_json_encode([$action,$state['repo'],$state['branch'],$state['prefix'],$remote['head'],array_map(function($v){ return $v['sha']; },$local),array_map(function($v){ return $v['sha']; },$remote['files'])]));
         set_transient(self::REVIEW_PREFIX . get_current_user_id(), ['fingerprint'=>$fingerprint,'action'=>$action,'head'=>$remote['head'],'created'=>time()], self::REVIEW_TTL);
         self::audit('review_' . $action, $blocked ? 'blocked' : 'success', ['counts'=>$counts,'blocked'=>$blocked]);
         return ['action'=>$action,'repo'=>$state['repo'],'branch'=>$state['branch'],'remoteHead'=>$remote['head'],'fingerprint'=>$fingerprint,'expiresIn'=>self::REVIEW_TTL,'files'=>$items,'counts'=>$counts,'blocked'=>$blocked,'expectedAction'=>$blocked?'blocked':(($counts['local_change']+$counts['local_only']+$counts['remote_change']+$counts['remote_only'])?'execute':'noop')];
