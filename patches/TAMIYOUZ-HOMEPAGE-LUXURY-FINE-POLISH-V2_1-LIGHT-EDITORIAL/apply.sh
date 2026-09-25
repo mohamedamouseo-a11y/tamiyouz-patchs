@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+set -euo pipefail
+PATCH="TAMIYOUZ-HOMEPAGE-LUXURY-FINE-POLISH-V2_1-LIGHT-EDITORIAL"
+ROOT="${WP_ROOT:-$PWD}"
+BASE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+MU="$ROOT/wp-content/mu-plugins"
+DIR="$MU/tamiyouz-homepage-v2-1"
+STAMP="$(date +%Y%m%d-%H%M%S)"
+[[ -f "$ROOT/wp-config.php" ]] || { echo "ERROR=SET_WP_ROOT"; exit 1; }
+php -l "$BASE/src/tamiyouz-home-v2-1-preview.php"
+php -l "$BASE/src/tamiyouz-homepage-v2-1/template.php"
+mkdir -p "$DIR/assets"
+[[ -f "$MU/tamiyouz-home-v2-1-preview.php" ]] && cp -a "$MU/tamiyouz-home-v2-1-preview.php" "$MU/tamiyouz-home-v2-1-preview.php.bak.$STAMP"
+cp "$BASE/src/tamiyouz-home-v2-1-preview.php" "$MU/tamiyouz-home-v2-1-preview.php"
+cp "$BASE/src/tamiyouz-homepage-v2-1/template.php" "$DIR/template.php"
+cp "$BASE/src/tamiyouz-homepage-v2-1/assets/home.css" "$DIR/assets/home.css"
+cp "$BASE/src/tamiyouz-homepage-v2-1/assets/home.js" "$DIR/assets/home.js"
+grep -q "$PATCH" "$MU/tamiyouz-home-v2-1-preview.php"
+grep -q "$PATCH" "$DIR/template.php"
+echo "PATCH=$PATCH"
+echo "APPLY=PASS"
+echo "MODE=PREVIEW_ONLY"
+echo "PUBLIC_CHANGED=NO"
