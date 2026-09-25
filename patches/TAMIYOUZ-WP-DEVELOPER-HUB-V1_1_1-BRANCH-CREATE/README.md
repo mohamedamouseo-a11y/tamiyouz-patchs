@@ -10,7 +10,7 @@ Adds:
 - explicit **Create Branch & Save** button.
 - if the branch already exists, it is simply selected/saved.
 - if the repository already has a default branch, the new branch is created from its HEAD.
-- if the repository is empty, the Hub creates one initial empty Git commit and then creates the requested branch.
+- if the repository is empty, the Hub creates a minimal initialization commit containing `.gitkeep`, then creates the requested branch.
 - stores the new remote HEAD in Developer Hub state.
 
 Safety:
