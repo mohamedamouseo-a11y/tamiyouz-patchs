@@ -1,0 +1,49 @@
+/* TAMIYOUZ-HOMEPAGE-HERO-GRAY-ARTIFACT-FIX-V3_1_3 */
+
+/* Kill stale media-slot placeholder/fallback nodes left from V3.0 prep. */
+#tyz-home-v21 .tyz-hero [class*="placeholder"],
+#tyz-home-v21 .tyz-hero [class*="fallback"],
+#tyz-home-v21 .tyz-hero .tyz-media-slot-placeholder,
+#tyz-home-v21 .tyz-hero .tyz-media-slot-fallback,
+#tyz-home-v21 .tyz-hero .tyz-hero-media-slot-placeholder,
+#tyz-home-v21 .tyz-hero .tyz-hero-media-slot-fallback,
+#tyz-home-v21 .tyz-hero .tyz-hero__placeholder,
+#tyz-home-v21 .tyz-hero .tyz-hero__fallback{
+  display:none!important;
+  visibility:hidden!important;
+  opacity:0!important;
+  width:0!important;
+  height:0!important;
+  min-width:0!important;
+  min-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  background:none!important;
+  box-shadow:none!important;
+}
+
+/* Any empty direct grid child is a stale layout artifact, not approved content. */
+#tyz-home-v21 .tyz-hero__grid > :empty{
+  display:none!important;
+}
+
+/* Prevent detached decorative blocks from Hero wrappers. */
+#tyz-home-v21 .tyz-hero:before,
+#tyz-home-v21 .tyz-hero:after,
+#tyz-home-v21 .tyz-hero__grid:before,
+#tyz-home-v21 .tyz-hero__grid:after,
+#tyz-home-v21 .tyz-hero__visual:before,
+#tyz-home-v21 .tyz-hero__visual:after{
+  content:none!important;
+  display:none!important;
+  background:none!important;
+  box-shadow:none!important;
+}
+
+/* Keep the approved bound Hero image untouched and visible. */
+#tyz-home-v21 .tyz-hero__media,
+#tyz-home-v21 .tyz-hero__media > .tyz-hero-media__image{
+  opacity:1!important;
+  visibility:visible!important;
+}
