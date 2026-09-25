@@ -1,0 +1,2 @@
+/* TAMIYOUZ-SITE-ARCHITECTURE-V1 */
+(function(){var b=document.querySelector('[data-tyz-site-theme]');if(!b)return;b.addEventListener('click',function(){var r=document.documentElement;var t=r.getAttribute('data-tyz-theme')==='dark'?'light':'dark';r.setAttribute('data-tyz-theme',t);try{localStorage.setItem('tamiyouz-theme',t)}catch(e){}})})();
