@@ -149,11 +149,33 @@ function tamiyouz_devhub_111_create_branch($token, $repo, $branch) {
 
     if (isset($source['__status']) && $source['__status'] === 404) {
         $empty_repo = true;
+        $blob = tamiyouz_devhub_111_github_request(
+            $token,
+            'POST',
+            '/repos/' . $repo . '/git/blobs',
+            array(
+                'content' => '',
+                'encoding' => 'utf-8'
+            ),
+            false
+        );
+        if (empty($blob['sha'])) {
+            throw new Exception('Could not create the initial Git blob.');
+        }
         $tree = tamiyouz_devhub_111_github_request(
             $token,
             'POST',
             '/repos/' . $repo . '/git/trees',
-            array('tree' => array()),
+            array(
+                'tree' => array(
+                    array(
+                        'path' => '.gitkeep',
+                        'mode' => '100644',
+                        'type' => 'blob',
+                        'sha' => $blob['sha']
+                    )
+                )
+            ),
             false
         );
         if (empty($tree['sha'])) {
@@ -284,7 +306,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             update_option($option_key, $state, false);
             if (!empty($created['created'])) {
                 $notice = !empty($created['empty_repo'])
-                    ? 'Branch created with an initial empty commit and saved.'
+                    ? 'Branch created with a minimal initialization commit and saved.'
                     : 'Branch created from the repository default branch and saved.';
             } else {
                 $notice = 'Branch already exists and was saved.';
