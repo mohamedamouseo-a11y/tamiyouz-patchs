@@ -1,0 +1,105 @@
+/* TAMIYOUZ-HOMEPAGE-HERO-COMPOSITION-FIX-V3_1_2 */
+/* Desktop: approved master = visual LEFT / Arabic copy RIGHT. */
+@media (min-width:1181px){
+  #tyz-home-v21 .tyz-hero__grid{
+    direction:ltr!important;
+    grid-template-columns:minmax(0,1.02fr) minmax(0,.98fr)!important;
+    grid-template-areas:"media copy"!important;
+    align-items:start!important;
+    gap:64px!important;
+    min-height:auto!important;
+    padding-block:56px 44px!important;
+  }
+  #tyz-home-v21 .tyz-hero__copy{
+    grid-area:copy!important;
+    direction:rtl!important;
+    align-self:start!important;
+    justify-self:stretch!important;
+    max-width:620px!important;
+    padding-top:18px!important;
+    margin:0!important;
+  }
+  #tyz-home-v21 .tyz-hero__visual{
+    grid-area:media!important;
+    direction:ltr!important;
+    align-self:start!important;
+    justify-self:stretch!important;
+    width:100%!important;
+    margin:0!important;
+    padding:0!important;
+    min-height:0!important;
+    transform:none!important;
+  }
+  #tyz-home-v21 .tyz-hero__visual:before,
+  #tyz-home-v21 .tyz-hero__visual:after{
+    content:none!important;
+    display:none!important;
+  }
+  #tyz-home-v21 .tyz-hero__visual > *:not(.tyz-hero__media){
+    display:none!important;
+  }
+  #tyz-home-v21 .tyz-hero__media{
+    width:100%!important;
+    min-height:0!important;
+    height:auto!important;
+    aspect-ratio:3/2!important;
+    margin:0!important;
+    padding:0!important;
+    border-radius:28px!important;
+    overflow:hidden!important;
+    box-shadow:0 28px 70px rgba(55,42,20,.16)!important;
+  }
+  #tyz-home-v21 .tyz-hero__media:before,
+  #tyz-home-v21 .tyz-hero__media:after{
+    content:none!important;
+    display:none!important;
+  }
+  #tyz-home-v21 .tyz-hero__media > .tyz-hero-media__image{
+    position:absolute!important;
+    inset:0!important;
+    width:100%!important;
+    height:100%!important;
+    object-fit:cover!important;
+    object-position:center center!important;
+    display:block!important;
+    visibility:visible!important;
+    opacity:1!important;
+    border-radius:inherit!important;
+    z-index:1!important;
+  }
+}
+
+/* Tablet/mobile: keep one clean column and remove any placeholder artifacts. */
+@media (max-width:1180px){
+  #tyz-home-v21 .tyz-hero__grid{
+    direction:rtl!important;
+    grid-template-columns:1fr!important;
+    grid-template-areas:"copy" "media"!important;
+  }
+  #tyz-home-v21 .tyz-hero__copy{grid-area:copy!important;direction:rtl!important;}
+  #tyz-home-v21 .tyz-hero__visual{
+    grid-area:media!important;
+    direction:ltr!important;
+    margin:0!important;
+    padding:0!important;
+  }
+  #tyz-home-v21 .tyz-hero__visual:before,
+  #tyz-home-v21 .tyz-hero__visual:after{
+    content:none!important;
+    display:none!important;
+  }
+  #tyz-home-v21 .tyz-hero__visual > *:not(.tyz-hero__media){
+    display:none!important;
+  }
+  #tyz-home-v21 .tyz-hero__media{
+    min-height:0!important;
+    height:auto!important;
+    aspect-ratio:3/2!important;
+    overflow:hidden!important;
+  }
+  #tyz-home-v21 .tyz-hero__media:before,
+  #tyz-home-v21 .tyz-hero__media:after{
+    content:none!important;
+    display:none!important;
+  }
+}
