@@ -1,0 +1,53 @@
+/* TAMIYOUZ-HOMEPAGE-HERO-STRUCTURAL-ARTIFACT-FIX-V3_1_4 */
+
+/* Hard-lock Hero grid to the only two approved structural children. */
+#tyz-home-v21 .tyz-hero__grid > *:not(.tyz-hero__copy):not(.tyz-hero__visual){
+  display:none!important;
+  visibility:hidden!important;
+  opacity:0!important;
+  width:0!important;
+  height:0!important;
+  min-width:0!important;
+  min-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  background:none!important;
+  box-shadow:none!important;
+}
+
+/* Remove any stale V3.0 media-slot container living outside the canonical media box. */
+#tyz-home-v21 .tyz-hero .tyz-hero-media:not(.tyz-hero__media),
+#tyz-home-v21 .tyz-hero [class*="hero-media-slot"]:not(.tyz-hero__media),
+#tyz-home-v21 .tyz-hero [class*="media-slot"]:not(.tyz-hero__media){
+  display:none!important;
+  visibility:hidden!important;
+  opacity:0!important;
+  width:0!important;
+  height:0!important;
+  min-width:0!important;
+  min-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  background:none!important;
+  box-shadow:none!important;
+}
+
+/* Canonical Hero media stays visible and unchanged. */
+#tyz-home-v21 .tyz-hero__visual,
+#tyz-home-v21 .tyz-hero__media,
+#tyz-home-v21 .tyz-hero__media > .tyz-hero-media__image{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+}
+
+/* Preserve the approved desktop grid composition explicitly. */
+@media (min-width:1181px){
+  #tyz-home-v21 .tyz-hero__grid{
+    grid-template-areas:"media copy"!important;
+  }
+  #tyz-home-v21 .tyz-hero__visual{grid-area:media!important;}
+  #tyz-home-v21 .tyz-hero__copy{grid-area:copy!important;}
+}
