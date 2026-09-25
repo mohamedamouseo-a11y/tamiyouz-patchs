@@ -2,22 +2,22 @@
 /**
  * Plugin Name: Tamiyouz Developer Hub
  * Description: TCRM-style GitHub control plane for Tamiyouz WordPress custom MU-plugin source.
- * Version: 1.0.1
+ * Version: 1.0.2
  * Author: Tamiyouz
  * Marker: TAMIYOUZ-WP-DEVELOPER-HUB-V1
- * Hotfix: V1.0.1 fatal parse/runtime corrections
+ * Hotfix: V1.0.2 PHP 7.3 compatibility
  */
 
 if (!defined('ABSPATH')) exit;
 
 final class Tamiyouz_Developer_Hub_V1 {
-    const VERSION = '1.0.1';
+    const VERSION = '1.0.2';
     const OPTION = 'tamiyouz_devhub_v1_state';
     const AUDIT = 'tamiyouz_devhub_v1_audit';
     const REVIEW_PREFIX = 'tamiyouz_devhub_v1_review_';
     const REVIEW_TTL = 600;
     const API = 'https://api.github.com';
-    const MAX_FILE = 2_000_000;
+    const MAX_FILE = 2000000;
 
     public static function boot() {
         add_action('admin_menu', [__CLASS__, 'menu']);
@@ -192,7 +192,7 @@ final class Tamiyouz_Developer_Hub_V1 {
         [$items, $counts] = self::classify($local, $remote['files'], is_array($state['base_manifest']) ? $state['base_manifest'] : []);
         $blocked = [];
         foreach ($items as $i) if ($i['status'] === 'conflict' && $action === 'sync') $blocked[] = ['path'=>$i['path'],'reason'=>'Both local and GitHub changed this file.'];
-        $fingerprint = hash('sha256', wp_json_encode([$action,$state['repo'],$state['branch'],$state['prefix'],$remote['head'],array_map(fn($v)=>$v['sha'],$local),array_map(fn($v)=>$v['sha'],$remote['files']]));
+        $fingerprint = hash('sha256', wp_json_encode([$action,$state['repo'],$state['branch'],$state['prefix'],$remote['head'],array_map(function($v){ return $v['sha']; },$local),array_map(fn($v)=>$v['sha'],$remote['files']]));
         set_transient(self::REVIEW_PREFIX . get_current_user_id(), ['fingerprint'=>$fingerprint,'action'=>$action,'head'=>$remote['head'],'created'=>time()], self::REVIEW_TTL);
         self::audit('review_' . $action, $blocked ? 'blocked' : 'success', ['counts'=>$counts,'blocked'=>$blocked]);
         return ['action'=>$action,'repo'=>$state['repo'],'branch'=>$state['branch'],'remoteHead'=>$remote['head'],'fingerprint'=>$fingerprint,'expiresIn'=>self::REVIEW_TTL,'files'=>$items,'counts'=>$counts,'blocked'=>$blocked,'expectedAction'=>$blocked?'blocked':(($counts['local_change']+$counts['local_only']+$counts['remote_change']+$counts['remote_only'])?'execute':'noop')];
@@ -274,16 +274,16 @@ final class Tamiyouz_Developer_Hub_V1 {
     }
 
     public static function routes() {
-        $ns = 'tamiyouz-devhub/v1'; $perm = fn()=>self::allowed();
+        $ns = 'tamiyouz-devhub/v1'; $perm = function(){ return self::allowed(); };
         register_rest_route($ns,'/status',['methods'=>'GET','permission_callback'=>$perm,'callback'=>function(){ $s=self::state(); unset($s['token'],$s['base_manifest']); return rest_ensure_response(['ok'=>true,'connected'=>!empty($s['verified_at']),'tokenSet'=>!empty(self::state()['token']),'status'=>$s,'localFiles'=>count(self::managed_files())]); }]);
         register_rest_route($ns,'/connect',['methods'=>'POST','permission_callback'=>$perm,'callback'=>function($r){ try { $token=trim((string)$r['token']); if(strlen($token)<20) throw new Exception('Invalid token.'); $u=self::request('GET','/user',null,$token); $s=self::save_state(['token'=>self::encrypt($token),'login'=>$u['login']??'','verified_at'=>gmdate('c')]); self::audit('github_connect','success',['login'=>$s['login']]); return ['ok'=>true,'login'=>$s['login']]; } catch(Throwable $e){ return new WP_Error('devhub',$e->getMessage(),['status'=>400]); }}]);
         register_rest_route($ns,'/disconnect',['methods'=>'POST','permission_callback'=>$perm,'callback'=>function(){ self::save_state(['token'=>'','repo'=>'','branch'=>'','login'=>'','permission'=>'','verified_at'=>'','base_manifest'=>[]]); self::audit('github_disconnect','success'); return ['ok'=>true]; }]);
         register_rest_route($ns,'/repos',['methods'=>'GET','permission_callback'=>$perm,'callback'=>function(){ try { $repos=self::request('GET','/user/repos?per_page=100&sort=updated&affiliation=owner,collaborator,organization_member'); $out=[]; foreach($repos as $x)$out[]=['fullName'=>$x['full_name'],'private'=>(bool)$x['private'],'defaultBranch'=>$x['default_branch']??'main','push'=>in_array(($x['permissions']['push']??false),[true,1],true)]; return ['repositories'=>$out]; }catch(Throwable $e){return new WP_Error('devhub',$e->getMessage(),['status'=>400]);}}]);
-        register_rest_route($ns,'/branches',['methods'=>'GET','permission_callback'=>$perm,'callback'=>function($r){ try{$repo=self::repo_parts($r['repo']);$b=self::request('GET','/repos/'.$repo.'/branches?per_page=100');return ['branches'=>array_values(array_filter(array_map(fn($x)=>$x['name']??'',$b)))];}catch(Throwable $e){return new WP_Error('devhub',$e->getMessage(),['status'=>400]);}}]);
+        register_rest_route($ns,'/branches',['methods'=>'GET','permission_callback'=>$perm,'callback'=>function($r){ try{$repo=self::repo_parts($r['repo']);$b=self::request('GET','/repos/'.$repo.'/branches?per_page=100');return ['branches'=>array_values(array_filter(array_map(function($x){ return isset($x['name']) ? $x['name'] : ''; },$b)))];}catch(Throwable $e){return new WP_Error('devhub',$e->getMessage(),['status'=>400]);}}]);
         register_rest_route($ns,'/selection',['methods'=>'POST','permission_callback'=>$perm,'callback'=>function($r){ try{$repo=self::repo_parts($r['repo']);$branch=preg_replace('/[^A-Za-z0-9._\\/-]/','',(string)$r['branch']);$prefix=trim(preg_replace('#[^A-Za-z0-9._/-]#','',(string)($r['prefix']?:'site')),'/');$meta=self::request('GET','/repos/'.$repo);$perm=!empty($meta['permissions']['push'])?'push':'pull';self::save_state(['repo'=>$repo,'branch'=>$branch,'prefix'=>$prefix,'permission'=>$perm,'verified_at'=>gmdate('c'),'base_manifest'=>[]]);self::audit('selection_saved','success',['repo'=>$repo,'branch'=>$branch]);return ['ok'=>true,'repo'=>$repo,'branch'=>$branch,'prefix'=>$prefix,'permission'=>$perm];}catch(Throwable $e){return new WP_Error('devhub',$e->getMessage(),['status'=>400]);}}]);
         register_rest_route($ns,'/review',['methods'=>'POST','permission_callback'=>$perm,'callback'=>function($r){try{return ['ok'=>true,'preview'=>self::review((string)$r['action'])];}catch(Throwable $e){return new WP_Error('devhub',$e->getMessage(),['status'=>400]);}}]);
         register_rest_route($ns,'/execute',['methods'=>'POST','permission_callback'=>$perm,'callback'=>function($r){try{return self::execute((string)$r['action'],(string)$r['fingerprint'],sanitize_text_field((string)$r['commitMessage']));}catch(Throwable $e){self::audit('execute_'.sanitize_key((string)$r['action']),'failed',['error'=>$e->getMessage()]);return new WP_Error('devhub',$e->getMessage(),['status'=>400]);}}]);
-        register_rest_route($ns,'/audit',['methods'=>'GET','permission_callback'=>$perm,'callback'=>fn()=>['items'=>array_slice((array)get_option(self::AUDIT,[]),0,50)]]);
+        register_rest_route($ns,'/audit',['methods'=>'GET','permission_callback'=>$perm,'callback'=>function(){ return ['items'=>array_slice((array)get_option(self::AUDIT,[]),0,50)]; }]);
     }
 
     public static function page() {
