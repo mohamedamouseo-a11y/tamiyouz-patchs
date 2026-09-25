@@ -2,15 +2,16 @@
 /**
  * Plugin Name: Tamiyouz Developer Hub
  * Description: TCRM-style GitHub control plane for Tamiyouz WordPress custom MU-plugin source.
- * Version: 1.0.0
+ * Version: 1.0.1
  * Author: Tamiyouz
  * Marker: TAMIYOUZ-WP-DEVELOPER-HUB-V1
+ * Hotfix: V1.0.1 fatal parse/runtime corrections
  */
 
 if (!defined('ABSPATH')) exit;
 
 final class Tamiyouz_Developer_Hub_V1 {
-    const VERSION = '1.0.0';
+    const VERSION = '1.0.1';
     const OPTION = 'tamiyouz_devhub_v1_state';
     const AUDIT = 'tamiyouz_devhub_v1_audit';
     const REVIEW_PREFIX = 'tamiyouz_devhub_v1_review_';
@@ -128,7 +129,7 @@ final class Tamiyouz_Developer_Hub_V1 {
                 return;
             }
             foreach (scandir($abs) ?: [] as $name) {
-                if ($name === '.' || $name === '...') continue;
+                if ($name === '.' || $name === '..') continue;
                 $scan($abs . '/' . $name, trim($rel . '/' . $name, '/'));
             }
         };
@@ -256,7 +257,7 @@ final class Tamiyouz_Developer_Hub_V1 {
         $local = self::managed_files(); $remote = self::remote_snapshot($state['repo'],$state['branch'],$state['prefix']);
         [$items] = self::classify($local,$remote['files'],is_array($state['base_manifest'])?$state['base_manifest']:[]);
         $pulled = 0; $pushed = 0; $commit = '';
-        if (in_array($action ['pull','sync'],true)) $pulled = self::pull_files($state,$remote,$items,$action);
+        if (in_array($action, ['pull','sync'], true)) $pulled = self::pull_files($state,$remote,$items,$action);
         if (in_array($action,['push','sync'],true)) { $r = self::push_files($state,$remote,$items,$action,$message); $pushed=$r['pushed']; $commit=$r['commit']; }
         $fresh = self::remote_snapshot($state['repo'],$state['branch'],$state['prefix']);
         $base = []; foreach ($fresh['files'] as $p=>$v) $base[$p]=$v['sha'];
@@ -275,13 +276,13 @@ final class Tamiyouz_Developer_Hub_V1 {
     public static function routes() {
         $ns = 'tamiyouz-devhub/v1'; $perm = fn()=>self::allowed();
         register_rest_route($ns,'/status',['methods'=>'GET','permission_callback'=>$perm,'callback'=>function(){ $s=self::state(); unset($s['token'],$s['base_manifest']); return rest_ensure_response(['ok'=>true,'connected'=>!empty($s['verified_at']),'tokenSet'=>!empty(self::state()['token']),'status'=>$s,'localFiles'=>count(self::managed_files())]); }]);
-        register_rest_route($ns,'/connect',['methods'=>'POST','permission_callback'=>$perm,'callback'=>function($r){ try { $token=trim((string)$r['token']); if(strlen($token)<20) throw new Exception('Invalid token.'); $u=self::request('GET','/user',null,$token); $s=self::save_state(['token'=>self::encrypt($token),'login'=>$u['login']??'','verified_at'=>gmdate('c')]); self::audit('github_connect','success',['login'=>$s['login']]); return ['ok'=>true,'login'=>$s['login']]; } catch(Throwable $e){ return new WP_Error('devhub',$e->get_Message(),['status'=>400]); }}]);
+        register_rest_route($ns,'/connect',['methods'=>'POST','permission_callback'=>$perm,'callback'=>function($r){ try { $token=trim((string)$r['token']); if(strlen($token)<20) throw new Exception('Invalid token.'); $u=self::request('GET','/user',null,$token); $s=self::save_state(['token'=>self::encrypt($token),'login'=>$u['login']??'','verified_at'=>gmdate('c')]); self::audit('github_connect','success',['login'=>$s['login']]); return ['ok'=>true,'login'=>$s['login']]; } catch(Throwable $e){ return new WP_Error('devhub',$e->getMessage(),['status'=>400]); }}]);
         register_rest_route($ns,'/disconnect',['methods'=>'POST','permission_callback'=>$perm,'callback'=>function(){ self::save_state(['token'=>'','repo'=>'','branch'=>'','login'=>'','permission'=>'','verified_at'=>'','base_manifest'=>[]]); self::audit('github_disconnect','success'); return ['ok'=>true]; }]);
-        register_rest_route($ns,'/repos',['methods'=>'GET','permission_callback'=>$perm,'callback'=>function(){ try { $repos=self::request('GET','/user/repos?per_page=100&sort=updated&affiliation=owner,collaborator,organization_member'); $out=[]; foreach($repos as $x)$out[]=['fullName'=>$x['full_name'],'private'=>(bool)$x['private'],'defaultBranch'=>$x['default_branch']??'main','push'=>in_array(($x['permissions']['push']??false),[true,1],true)]; return ['repositories'=>$out]; }catch(Throwable $e){return new WP_Error('devhub',$e->get_Message(),['status'=>400]);}}]);
+        register_rest_route($ns,'/repos',['methods'=>'GET','permission_callback'=>$perm,'callback'=>function(){ try { $repos=self::request('GET','/user/repos?per_page=100&sort=updated&affiliation=owner,collaborator,organization_member'); $out=[]; foreach($repos as $x)$out[]=['fullName'=>$x['full_name'],'private'=>(bool)$x['private'],'defaultBranch'=>$x['default_branch']??'main','push'=>in_array(($x['permissions']['push']??false),[true,1],true)]; return ['repositories'=>$out]; }catch(Throwable $e){return new WP_Error('devhub',$e->getMessage(),['status'=>400]);}}]);
         register_rest_route($ns,'/branches',['methods'=>'GET','permission_callback'=>$perm,'callback'=>function($r){ try{$repo=self::repo_parts($r['repo']);$b=self::request('GET','/repos/'.$repo.'/branches?per_page=100');return ['branches'=>array_values(array_filter(array_map(fn($x)=>$x['name']??'',$b)))];}catch(Throwable $e){return new WP_Error('devhub',$e->get_message(),['status'=>400]);}}]);
-        register_rest_route($ns,'/selection',['methods'=>'POST','permission_callback'=>$perm,'callback'=>function($r){ try{$repo=self::repo_parts($r['repo']);$branch=preg_replace('/[^A-Za-z0-9._\\/-]/','',(string)$r['branch']);$prefix=trim(preg_replace('#[^A-Za-z0-9._/-]#','',(string)($r['prefix']?:'site')),'/');$meta=self::request('GET','/repos/'.$repo);$perm=$meta['permissions']['push']??&alse?'push':'pull';self::save_state(['repo'=>$repo,'branch'=>$branch,'prefix'=>$prefix,'permission'=>$perm,'verified_at'=>gmdate('c'),'base_manifest'=>[]]);self::audit('selection_saved','success',['repo'=>$repo,'branch'=>$branch]);return ['ok'=>true,'repo'=>$repo,'branch'=>$branch,'prefix'=>$prefix,'permission'=>$perm];}catch(Throwable $e){return new WP_Error('devhub',$e->get_message(),['status'=>400]);}}]);
+        register_rest_route($ns,'/selection',['methods'=>'POST','permission_callback'=>$perm,'callback'=>function($r){ try{$repo=self::repo_parts($r['repo']);$branch=preg_replace('/[^A-Za-z0-9._\\/-]/','',(string)$r['branch']);$prefix=trim(preg_replace('#[^A-Za-z0-9._/-]#','',(string)($r['prefix']?:'site')),'/');$meta=self::request('GET','/repos/'.$repo);$perm=!empty($meta['permissions']['push'])?'push':'pull';self::save_state(['repo'=>$repo,'branch'=>$branch,'prefix'=>$prefix,'permission'=>$perm,'verified_at'=>gmdate('c'),'base_manifest'=>[]]);self::audit('selection_saved','success',['repo'=>$repo,'branch'=>$branch]);return ['ok'=>true,'repo'=>$repo,'branch'=>$branch,'prefix'=>$prefix,'permission'=>$perm];}catch(Throwable $e){return new WP_Error('devhub',$e->get_message(),['status'=>400]);}}]);
         register_rest_route($ns,'/review',['methods'=>'POST','permission_callback'=>$perm,'callback'=>function($r){try{return ['ok'=>true,'preview'=>self::review((string)$r['action'])];}catch(Throwable $e){return new WP_Error('devhub',$e->get_message(),['status'=>400]);}}]);
-        register_rest_route($ns,'/execute',['methods'=>'POST','permission_callback'=>$perm,'callback'=>function($r){try{return self::execute((string)$r['action'],(string)$r['fingerprint'],sanitize_text_field((string)$r['commitMessage']));}catch(Throwable $e){self::audit('execute_'.sanitize_key((string)$r['action']),'failed',['error'=>$e->get_Message()]);return new WP_Error('devhub',$e->get_message(),['status'=>400]);}}]);
+        register_rest_route($ns,'/execute',['methods'=>'POST','permission_callback'=>$perm,'callback'=>function($r){try{return self::execute((string)$r['action'],(string)$r['fingerprint'],sanitize_text_field((string)$r['commitMessage']));}catch(Throwable $e){self::audit('execute_'.sanitize_key((string)$r['action']),'failed',['error'=>$e->getMessage()]);return new WP_Error('devhub',$e->get_message(),['status'=>400]);}}]);
         register_rest_route($ns,'/audit',['methods'=>'GET','permission_callback'=>$perm,'callback'=>fn()=>['items'=>array_slice((array)get_option(self::AUDIT,[]),0,50)]]);
     }
 
@@ -300,7 +301,7 @@ final class Tamiyouz_Developer_Hub_V1 {
           <section class="tyz-card"><div class="tyz-section-title"><h2>Audit</h2><button class="button" id="tyz-audit-refresh">Refresh</button></div><div id="tyz-audit" class="audit"></div></section>
         </div>
         <style>
-        .tyz-devhub{max-width:1250px}.tyz-head,.tyz-section-title,.row{display:flex;align-items:center;justify-content:space-between;gap:12px}.tyz-head{margin:22px 0}.tyz-head h1{margin:0;font-size:30px}.tyz-head p,.muted,.tyz-section-title p{color:#6b7280}.tyz-grid.two{display:grid;grid-template-columns:1fr 1fr;gap:18px}.tyz-card{background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:20px;margin:0 0 18px;box-shadow:0 10px 30px rgba(15,23,42,.04)}.tyz-card h2{margin-top:0}.tyz-card label{display:block;font-weight:600;margin:12px 0 6px}.tyz-card input,.tyz-card select{width:100%;min-height:40px}.row input{flex:1}.row .button{flex:none}.top{margin-top:14px}.tyz-pill{display:inline-flex;align-items:center;padding:5px 10px;border-radius:999px;background:#f3f4f6;font-weight:700;font-size:12px}.tyz-pill.ok{background:#ecfdf5;color:#047857}.tyz-pill.bad{background:#fef2f2;color:#b91c1c}.tyz-stats{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-top:15px}.tyz-stat{border:1px solid #e5e7eb;border-radius:12px;padding:12px}.tyz-stat small{display:block;color:#6b7280}.tyz-stat b{font-size:20px}.actions{display:flex;gap:8px;flex-wrap:wrap}.table-wrap{max-height:430px;overflow:auto;margin:15px 0}.tyz-dir-local{color:#0369a1}.tyz-dir-remote{color:#7c3aed}.tyz-dir-conflict{color:#b91c1c;font-weight:800}.tyz-block{padding:12px;border-radius:12px;background:#fef2f2;color:#991b1b;margin:12px 0}.audit{display:grid;gap:8px}.audit-item{display:grid;grid-template-columns:170px 1fr 110px;gap:10px;padding:10px;border-bottom:1px solid #eee;font-family:monospace;font-size:12px}@media(max-width:900px){.tyz-grid.two{grid-template-columns:1fr}.tyz-stats{grid-template-columns:repeat(2,1fr).}.tyz-head,.tyz-section-title{align-items:flex-start;flex-direction:column}}
+        .tyz-devhub{max-width:1250px}.tyz-head,.tyz-section-title,.row{display:flex;align-items:center;justify-content:space-between;gap:12px}.tyz-head{margin:22px 0}.tyz-head h1{margin:0;font-size:30px}.tyz-head p,.muted,.tyz-section-title p{color:#6b7280}.tyz-grid.two{display:grid;grid-template-columns:1fr 1fr;gap:18px}.tyz-card{background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:20px;margin:0 0 18px;box-shadow:0 10px 30px rgba(15,23,42,.04)}.tyz-card h2{margin-top:0}.tyz-card label{display:block;font-weight:600;margin:12px 0 6px}.tyz-card input,.tyz-card select{width:100%;min-height:40px}.row input{flex:1}.row .button{flex:none}.top{margin-top:14px}.tyz-pill{display:inline-flex;align-items:center;padding:5px 10px;border-radius:999px;background:#f3f4f6;font-weight:700;font-size:12px}.tyz-pill.ok{background:#ecfdf5;color:#047857}.tyz-pill.bad{background:#fef2f2;color:#b91c1c}.tyz-stats{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-top:15px}.tyz-stat{border:1px solid #e5e7eb;border-radius:12px;padding:12px}.tyz-stat small{display:block;color:#6b7280}.tyz-stat b{font-size:20px}.actions{display:flex;gap:8px;flex-wrap:wrap}.table-wrap{max-height:430px;overflow:auto;margin:15px 0}.tyz-dir-local{color:#0369a1}.tyz-dir-remote{color:#7c3aed}.tyz-dir-conflict{color:#b91c1c;font-weight:800}.tyz-block{padding:12px;border-radius:12px;background:#fef2f2;color:#991b1b;margin:12px 0}.audit{display:grid;gap:8px}.audit-item{display:grid;grid-template-columns:170px 1fr 110px;gap:10px;padding:10px;border-bottom:1px solid #eee;font-family:monospace;font-size:12px}@media(max-width:900px){.tyz-grid.two{grid-template-columns:1fr}.tyz-stats{grid-template-columns:repeat(2,1fr);}.tyz-head,.tyz-section-title{align-items:flex-start;flex-direction:column}}
         </style>
         <script>
         (()=>{const base=<?php echo wp_json_encode(rest_url('tamiyouz-devhub/v1')); ?>,nonce=<?php echo wp_json_encode($nonce); ?>,$=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];let status=null,preview=null;
