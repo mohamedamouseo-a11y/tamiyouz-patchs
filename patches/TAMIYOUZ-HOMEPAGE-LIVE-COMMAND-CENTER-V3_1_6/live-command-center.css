@@ -52,10 +52,10 @@
     radial-gradient(circle at 62% 65%,rgba(56,116,255,.12),transparent 42%);
 }
 #tyz-home-v21 .tyz-live-command__screen--right{
-  left:66.4%;
-  top:34.2%;
-  width:18.8%;
-  height:29.5%;
+  left:81.0%;
+  top:33.0%;
+  width:14.0%;
+  height:29.0%;
   clip-path:polygon(2% 6%,96% 2%,100% 96%,0 100%);
   background:linear-gradient(180deg,rgba(31,58,91,.04),rgba(4,13,25,.16));
 }
