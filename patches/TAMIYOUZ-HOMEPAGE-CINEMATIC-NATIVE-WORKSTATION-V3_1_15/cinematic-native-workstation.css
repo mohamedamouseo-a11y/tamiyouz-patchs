@@ -1,0 +1,280 @@
+/* TAMIYOUZ-HOMEPAGE-CINEMATIC-NATIVE-WORKSTATION-V3_1_15 */
+
+/* Visual polish only. V3.1.14 native structure remains the canonical architecture. */
+#tyz-home-v21 .tyz-hero__media.tyz-premium-workstation-v3114{
+  border-radius:32px!important;
+  background:#ece6dd!important;
+  box-shadow:
+    0 38px 94px rgba(46,37,25,.17),
+    0 2px 0 rgba(255,255,255,.62) inset!important;
+}
+
+#tyz-home-v21 .tyz-hero__media.tyz-premium-workstation-v3114 > .tyz-pw-scene{
+  background:
+    radial-gradient(circle at 82% 8%,rgba(255,255,255,.99),transparent 23%),
+    radial-gradient(circle at 22% 15%,rgba(255,255,255,.82),transparent 29%),
+    linear-gradient(135deg,#f6f2ec 0%,#ebe4db 53%,#dcd2c6 100%)!important;
+}
+
+/* architectural wall depth */
+#tyz-home-v21 .tyz-pw-scene:before{
+  content:"";
+  position:absolute;
+  left:69%;
+  top:0;
+  bottom:22%;
+  width:31%;
+  z-index:1;
+  background:
+    linear-gradient(90deg,rgba(255,255,255,.08),rgba(255,255,255,.3)),
+    repeating-linear-gradient(90deg,transparent 0 18%,rgba(84,73,59,.045) 18.2% 18.6%,transparent 18.8% 37%);
+  border-left:1px solid rgba(84,73,59,.05);
+  pointer-events:none;
+}
+#tyz-home-v21 .tyz-pw-scene:after{
+  content:"";
+  position:absolute;
+  left:7%;
+  right:2%;
+  bottom:4.7%;
+  height:10%;
+  z-index:3;
+  border-radius:50%;
+  background:radial-gradient(ellipse at center,rgba(44,34,23,.16),rgba(44,34,23,0) 68%);
+  filter:blur(9px);
+  pointer-events:none;
+}
+
+/* Make the main screen the unmistakable focal point. */
+#tyz-home-v21 .tyz-pw-monitor--main{
+  left:5.2%!important;
+  top:10.5%!important;
+  width:67%!important;
+  height:66%!important;
+  z-index:9!important;
+  transform:translate3d(var(--mx,0px),var(--my,0px),0) perspective(1200px) rotateY(-2.2deg)!important;
+}
+#tyz-home-v21 .tyz-pw-monitor--aux{
+  right:2.8%!important;
+  top:27.5%!important;
+  width:22.5%!important;
+  height:42%!important;
+  z-index:7!important;
+  transform:perspective(950px) rotateY(3.2deg);
+  transform-origin:right center;
+  opacity:.96;
+}
+
+/* Premium hardware */
+#tyz-home-v21 .tyz-pw-monitor__shell{
+  border-width:8px!important;
+  border-color:#1b1e22!important;
+  border-radius:20px!important;
+  box-shadow:
+    0 30px 62px rgba(19,21,24,.24),
+    0 0 0 1px rgba(255,255,255,.05) inset,
+    0 1px 0 rgba(255,255,255,.08)!important;
+}
+#tyz-home-v21 .tyz-pw-monitor--main .tyz-pw-monitor__shell:before,
+#tyz-home-v21 .tyz-pw-monitor--aux .tyz-pw-monitor__shell:before{
+  content:"";
+  position:absolute;
+  left:2%;right:2%;top:0;
+  height:1px;
+  z-index:20;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);
+}
+#tyz-home-v21 .tyz-pw-monitor__stem{
+  background:linear-gradient(180deg,#35383d 0%,#202226 42%,#111316 100%)!important;
+  filter:drop-shadow(0 5px 5px rgba(18,18,18,.12));
+}
+#tyz-home-v21 .tyz-pw-monitor__base{
+  height:5.5%!important;
+  background:linear-gradient(180deg,#282a2e,#121417)!important;
+  box-shadow:0 7px 12px rgba(20,20,20,.15)!important;
+}
+
+/* Slightly scale the screen UI up so it reads as a product, not a thumbnail. */
+#tyz-home-v21 .tyz-pw-ui__head{
+  height:14%!important;
+  padding-inline:4.2%!important;
+}
+#tyz-home-v21 .tyz-pw-workflow{
+  height:18%!important;
+  padding-inline:3.4%!important;
+}
+#tyz-home-v21 .tyz-pw-step{
+  height:42px!important;
+  border-radius:10px!important;
+}
+#tyz-home-v21 .tyz-pw-step small{font-size:clamp(4.4px,.32vw,5.2px)!important}
+#tyz-home-v21 .tyz-pw-step b{font-size:clamp(6px,.46vw,7.6px)!important}
+#tyz-home-v21 .tyz-pw-grid{
+  height:68%!important;
+  grid-template-columns:78px 1fr!important;
+}
+#tyz-home-v21 .tyz-pw-sidebar{
+  padding:10px 8px!important;
+  gap:7px!important;
+}
+#tyz-home-v21 .tyz-pw-channel{
+  min-height:33px!important;
+  border-radius:9px!important;
+}
+#tyz-home-v21 .tyz-pw-main{
+  padding:10px 11px 11px!important;
+  gap:8px!important;
+}
+#tyz-home-v21 .tyz-pw-metrics{
+  gap:7px!important;
+}
+#tyz-home-v21 .tyz-pw-metrics article{
+  padding:7px 8px!important;
+  border-radius:9px!important;
+}
+#tyz-home-v21 .tyz-pw-metrics strong{
+  font-size:clamp(10px,.8vw,13px)!important;
+}
+#tyz-home-v21 .tyz-pw-analytics{
+  gap:8px!important;
+}
+#tyz-home-v21 .tyz-pw-panel{
+  padding:8px!important;
+  border-radius:10px!important;
+}
+
+/* Aux monitor should support the composition, not compete with it. */
+#tyz-home-v21 .tyz-pw-monitor--aux .tyz-pw-monitor__shell{
+  border-width:7px!important;
+  border-radius:17px!important;
+  box-shadow:0 24px 48px rgba(21,23,26,.18),0 0 0 1px rgba(255,255,255,.04) inset!important;
+}
+#tyz-home-v21 .tyz-pw-aux{
+  padding:11% 9%!important;
+}
+#tyz-home-v21 .tyz-pw-orb{
+  width:52px!important;
+  height:52px!important;
+  margin-top:14%!important;
+}
+
+/* Desk: perspective slab, not a flat brown bar. */
+#tyz-home-v21 .tyz-pw-desk{
+  left:3.8%!important;
+  right:1.8%!important;
+  bottom:4.1%!important;
+  height:12.5%!important;
+  z-index:5!important;
+  border-radius:12px 12px 18px 18px!important;
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.11),transparent 14%),
+    linear-gradient(180deg,#725b45 0%,#604a38 47%,#493627 100%)!important;
+  clip-path:polygon(4% 0,97% 0,100% 74%,96% 100%,5% 100%,0 74%)!important;
+  box-shadow:
+    0 14px 28px rgba(59,43,29,.18),
+    0 1px 0 rgba(255,255,255,.12) inset!important;
+}
+#tyz-home-v21 .tyz-pw-desk:after{
+  content:"";
+  position:absolute;
+  left:4%;right:4%;bottom:8%;
+  height:10%;
+  border-radius:99px;
+  background:rgba(30,23,17,.14);
+  filter:blur(7px);
+}
+#tyz-home-v21 .tyz-pw-keyboard{
+  left:35%!important;
+  top:18%!important;
+  width:28%!important;
+  height:31%!important;
+  transform:perspective(220px) rotateX(12deg) skewX(-6deg)!important;
+  background:linear-gradient(180deg,#2b2e32,#1d1f22)!important;
+  box-shadow:0 5px 8px rgba(20,20,20,.12)!important;
+}
+#tyz-home-v21 .tyz-pw-mouse{
+  left:69%!important;
+  top:26%!important;
+  width:4.6%!important;
+  height:33%!important;
+  background:linear-gradient(180deg,#2d3034,#1c1e21)!important;
+  box-shadow:0 4px 7px rgba(20,20,20,.12)!important;
+}
+
+/* Operator: dark rear silhouette; the face is never shown. */
+#tyz-home-v21 .tyz-pw-operator{
+  right:5.2%!important;
+  bottom:.8%!important;
+  width:23%!important;
+  height:63%!important;
+  z-index:12!important;
+  filter:drop-shadow(0 14px 22px rgba(24,24,24,.16))!important;
+  opacity:.97;
+}
+
+/* Subtle contact shadows under hardware. */
+#tyz-home-v21 .tyz-pw-monitor--main:after,
+#tyz-home-v21 .tyz-pw-monitor--aux:after{
+  content:"";
+  position:absolute;
+  left:17%;right:17%;bottom:-19%;
+  height:9%;
+  border-radius:50%;
+  background:radial-gradient(ellipse at center,rgba(22,22,22,.16),rgba(22,22,22,0) 72%);
+  filter:blur(5px);
+  z-index:-1;
+}
+
+/* keep the warm light scene, but give it less flatness */
+#tyz-home-v21 .tyz-pw-light--a{
+  width:36%!important;
+  height:44%!important;
+  right:-8%!important;
+  top:-10%!important;
+  filter:blur(38px)!important;
+}
+#tyz-home-v21 .tyz-pw-light--b{
+  width:29%!important;
+  height:34%!important;
+  left:18%!important;
+  bottom:-15%!important;
+  background:rgba(196,148,66,.085)!important;
+  filter:blur(35px)!important;
+}
+
+html[data-tyz-theme="dark"] #tyz-home-v21 .tyz-hero__media.tyz-premium-workstation-v3114{
+  box-shadow:0 38px 96px rgba(0,0,0,.38),0 1px 0 rgba(255,255,255,.04) inset!important;
+}
+html[data-tyz-theme="dark"] #tyz-home-v21 .tyz-pw-scene:before{
+  background:
+    linear-gradient(90deg,rgba(255,255,255,.01),rgba(255,255,255,.025)),
+    repeating-linear-gradient(90deg,transparent 0 18%,rgba(255,255,255,.028) 18.2% 18.6%,transparent 18.8% 37%)!important;
+  border-left-color:rgba(255,255,255,.025)!important;
+}
+
+@media(max-width:1180px){
+  #tyz-home-v21 .tyz-pw-monitor--main{left:4%!important;width:69%!important}
+  #tyz-home-v21 .tyz-pw-monitor--aux{right:2%!important;width:22%!important}
+  #tyz-home-v21 .tyz-pw-operator{right:4%!important;width:24%!important}
+}
+
+@media(max-width:760px){
+  #tyz-home-v21 .tyz-pw-monitor--main{
+    left:4%!important;
+    top:8%!important;
+    width:92%!important;
+    height:70%!important;
+    transform:none!important;
+  }
+  #tyz-home-v21 .tyz-pw-operator{
+    right:1%!important;
+    bottom:.5%!important;
+    width:27%!important;
+    height:47%!important;
+    opacity:.8!important;
+  }
+  #tyz-home-v21 .tyz-pw-desk{
+    left:4%!important;
+    right:1%!important;
+  }
+}
