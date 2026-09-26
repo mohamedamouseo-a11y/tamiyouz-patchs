@@ -1,0 +1,192 @@
+/* TAMIYOUZ-HOMEPAGE-WORKFLOW-SIGNAL-CALIBRATION-V3_1_10 */
+
+/* Fully retire prior card-animation experiments. */
+#tyz-home-v21 .tyz-living-cards-v317 > .tyz-living-cards,
+#tyz-home-v21 .tyz-native-cards-v318 > .tyz-native-cards,
+#tyz-home-v21 .tyz-inframe-v319 > .tyz-inframe-cards{
+  display:none!important;
+  visibility:hidden!important;
+  opacity:0!important;
+}
+
+/* Calibrated overlay layer. */
+#tyz-home-v21 .tyz-hero__media.tyz-workflow-signal-v3110 > .tyz-workflow-signal{
+  display:block!important;
+  visibility:visible!important;
+  position:absolute!important;
+  inset:0!important;
+  z-index:44!important;
+  overflow:hidden!important;
+  border-radius:inherit!important;
+  pointer-events:none!important;
+}
+
+/* Real small workflow cards: New Lead / Auto Follow up / Create Task / Assign Team / Close Deal.
+   Zones are intentionally conservative and remain inside the card face. */
+#tyz-home-v21 .tyz-workflow-signal__card{
+  position:absolute;
+  overflow:hidden;
+  border-radius:7px;
+  opacity:.4;
+  filter:brightness(1);
+  transition:opacity .25s ease,filter .25s ease,box-shadow .25s ease;
+}
+#tyz-home-v21 .tyz-workflow-signal__card--lead{left:30.7%;top:10.5%;width:6.8%;height:12.3%}
+#tyz-home-v21 .tyz-workflow-signal__card--follow{left:40.4%;top:10.5%;width:7.1%;height:12.3%}
+#tyz-home-v21 .tyz-workflow-signal__card--create{left:50.2%;top:10.5%;width:7.0%;height:12.3%}
+#tyz-home-v21 .tyz-workflow-signal__card--assign{left:60.0%;top:10.5%;width:7.2%;height:12.3%}
+#tyz-home-v21 .tyz-workflow-signal__card--close{left:69.9%;top:10.5%;width:6.2%;height:12.3%}
+
+#tyz-home-v21 .tyz-workflow-signal__card:before{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:inherit;
+  border:1px solid rgba(220,173,87,.08);
+  background:
+    radial-gradient(circle at var(--mx,50%) var(--my,45%),rgba(238,193,104,.19),transparent 42%),
+    linear-gradient(115deg,transparent 22%,rgba(255,255,255,.24) 48%,transparent 72%);
+  background-size:auto,250% 100%;
+  background-position:center,-120% 0;
+  opacity:.32;
+  transition:opacity .25s ease,background-position .62s ease,border-color .25s ease;
+}
+#tyz-home-v21 .tyz-workflow-signal__card:after{
+  content:"";
+  position:absolute;
+  right:12%;
+  top:11%;
+  width:4px;
+  height:4px;
+  border-radius:50%;
+  background:#d1a14f;
+  box-shadow:0 0 0 0 rgba(209,161,79,.25);
+  opacity:.25;
+}
+#tyz-home-v21 .tyz-workflow-signal__card.is-awake,
+#tyz-home-v21 .tyz-workflow-signal__card.is-active{
+  opacity:1;
+  filter:brightness(1.055) saturate(1.03);
+  box-shadow:0 0 0 1px rgba(214,168,82,.08) inset;
+}
+#tyz-home-v21 .tyz-workflow-signal__card.is-awake:before,
+#tyz-home-v21 .tyz-workflow-signal__card.is-active:before{
+  opacity:.86;
+  border-color:rgba(218,171,85,.25);
+  background-position:center,120% 0;
+}
+#tyz-home-v21 .tyz-workflow-signal__card.is-awake:after,
+#tyz-home-v21 .tyz-workflow-signal__card.is-active:after{
+  opacity:.9;
+  animation:tyzV3110CardDot 1.25s ease-out 1;
+}
+@keyframes tyzV3110CardDot{
+  0%{box-shadow:0 0 0 0 rgba(209,161,79,.3)}
+  72%{box-shadow:0 0 0 6px rgba(209,161,79,0)}
+  100%{box-shadow:0 0 0 0 rgba(209,161,79,0)}
+}
+
+/* Four real connector gaps between the five cards. */
+#tyz-home-v21 .tyz-workflow-signal__connector{
+  position:absolute;
+  top:16.25%;
+  height:1.5%;
+  overflow:hidden;
+  opacity:.35;
+}
+#tyz-home-v21 .tyz-workflow-signal__connector--1{left:37.9%;width:2.1%}
+#tyz-home-v21 .tyz-workflow-signal__connector--2{left:47.7%;width:2.1%}
+#tyz-home-v21 .tyz-workflow-signal__connector--3{left:57.7%;width:2.0%}
+#tyz-home-v21 .tyz-workflow-signal__connector--4{left:67.7%;width:1.9%}
+#tyz-home-v21 .tyz-workflow-signal__connector:before{
+  content:"";
+  position:absolute;
+  left:-35%;
+  top:50%;
+  width:35%;
+  height:2px;
+  margin-top:-1px;
+  border-radius:99px;
+  background:linear-gradient(90deg,transparent,rgba(222,174,86,.95),transparent);
+  animation:tyzV3110Flow 4.8s linear infinite;
+}
+#tyz-home-v21 .tyz-workflow-signal__connector--1:before{animation-delay:0s}
+#tyz-home-v21 .tyz-workflow-signal__connector--2:before{animation-delay:1.05s}
+#tyz-home-v21 .tyz-workflow-signal__connector--3:before{animation-delay:2.1s}
+#tyz-home-v21 .tyz-workflow-signal__connector--4:before{animation-delay:3.15s}
+@keyframes tyzV3110Flow{
+  0%,58%{transform:translateX(0);opacity:0}
+  64%{opacity:1}
+  78%{transform:translateX(390%);opacity:1}
+  84%,100%{transform:translateX(390%);opacity:0}
+}
+
+/* Instagram and TikTok: conservative inner zones only. */
+#tyz-home-v21 .tyz-workflow-signal__social{
+  position:absolute;
+  overflow:hidden;
+  border-radius:7px;
+  opacity:.42;
+  transition:opacity .25s ease,filter .25s ease;
+}
+#tyz-home-v21 .tyz-workflow-signal__social--instagram{left:.35%;top:16.6%;width:4.7%;height:8.0%}
+#tyz-home-v21 .tyz-workflow-signal__social--tiktok{left:.35%;top:26.0%;width:4.7%;height:8.0%}
+#tyz-home-v21 .tyz-workflow-signal__social:before,
+#tyz-home-v21 .tyz-workflow-signal__social:after{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:50%;
+  border-radius:50%;
+  transform:translate(-50%,-50%);
+}
+#tyz-home-v21 .tyz-workflow-signal__social:before{
+  width:55%;
+  aspect-ratio:1;
+  border:1px solid rgba(219,171,84,.25);
+  box-shadow:0 0 0 0 rgba(219,171,84,.18);
+  animation:tyzV3110Social 2.65s ease-out infinite;
+}
+#tyz-home-v21 .tyz-workflow-signal__social:after{
+  width:18%;
+  aspect-ratio:1;
+  background:rgba(226,180,92,.52);
+  filter:blur(.2px);
+  opacity:.35;
+}
+#tyz-home-v21 .tyz-workflow-signal__social.is-awake,
+#tyz-home-v21 .tyz-workflow-signal__social.is-active{
+  opacity:1;
+  filter:brightness(1.08) saturate(1.05);
+}
+#tyz-home-v21 .tyz-workflow-signal__social.is-awake:before,
+#tyz-home-v21 .tyz-workflow-signal__social.is-active:before{
+  animation-duration:1.25s;
+}
+@keyframes tyzV3110Social{
+  0%{transform:translate(-50%,-50%) scale(.74);box-shadow:0 0 0 0 rgba(219,171,84,.25);opacity:.3}
+  68%{transform:translate(-50%,-50%) scale(1);box-shadow:0 0 0 7px rgba(219,171,84,0);opacity:.85}
+  100%{transform:translate(-50%,-50%) scale(.84);box-shadow:0 0 0 0 rgba(219,171,84,0);opacity:.3}
+}
+
+/* No zone translation at all in V3.1.10. Mouse changes only local light coordinates. */
+#tyz-home-v21 .tyz-workflow-signal__card,
+#tyz-home-v21 .tyz-workflow-signal__social{
+  transform:none!important;
+}
+
+@media(max-width:760px){
+  #tyz-home-v21 .tyz-workflow-signal{display:none!important}
+}
+@media(prefers-reduced-motion:reduce){
+  #tyz-home-v21 .tyz-workflow-signal__card:after,
+  #tyz-home-v21 .tyz-workflow-signal__connector:before,
+  #tyz-home-v21 .tyz-workflow-signal__social:before{
+    animation:none!important;
+  }
+  #tyz-home-v21 .tyz-workflow-signal__card,
+  #tyz-home-v21 .tyz-workflow-signal__social,
+  #tyz-home-v21 .tyz-workflow-signal__card:before{
+    transition:none!important;
+  }
+}
