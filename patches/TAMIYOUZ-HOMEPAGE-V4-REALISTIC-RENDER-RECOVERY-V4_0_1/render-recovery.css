@@ -1,0 +1,36 @@
+/* TAMIYOUZ-HOMEPAGE-V4-REALISTIC-RENDER-RECOVERY-V4_0_1 */
+
+/*
+ * Recovery for legacy V3.1.1 direct-child hide rule.
+ * Scope ONLY the approved V4.0 direct children, at higher specificity.
+ */
+#tyz-home-v21 .tyz-hero__media.tyz-rh-v40 > .tyz-rh-photo,
+#tyz-home-v21 .tyz-hero__media.tyz-rh-v40 > .tyz-rh-kpis,
+#tyz-home-v21 .tyz-hero__media.tyz-rh-v40 > .tyz-rh-screen,
+#tyz-home-v21 .tyz-hero__media.tyz-rh-v40 > .tyz-rh-glass{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+}
+
+/* Preserve intended stacking after recovery. */
+#tyz-home-v21 .tyz-hero__media.tyz-rh-v40 > .tyz-rh-photo{z-index:1!important}
+#tyz-home-v21 .tyz-hero__media.tyz-rh-v40 > .tyz-rh-screen{z-index:12!important}
+#tyz-home-v21 .tyz-hero__media.tyz-rh-v40 > .tyz-rh-kpis{z-index:14!important}
+#tyz-home-v21 .tyz-hero__media.tyz-rh-v40 > .tyz-rh-glass{z-index:20!important;pointer-events:none!important}
+
+/* Explicitly keep every legacy runtime layer hidden if an old script appends it. */
+#tyz-home-v21 .tyz-hero__media.tyz-rh-v40 > .tyz-command-hero__fx,
+#tyz-home-v21 .tyz-hero__media.tyz-rh-v40 > .tyz-live-command,
+#tyz-home-v21 .tyz-hero__media.tyz-rh-v40 > .tyz-living-cards,
+#tyz-home-v21 .tyz-hero__media.tyz-rh-v40 > .tyz-native-cards,
+#tyz-home-v21 .tyz-hero__media.tyz-rh-v40 > .tyz-inframe-cards,
+#tyz-home-v21 .tyz-hero__media.tyz-rh-v40 > .tyz-workflow-signal,
+#tyz-home-v21 .tyz-hero__media.tyz-rh-v40 > .tyz-native-hero__scene,
+#tyz-home-v21 .tyz-hero__media.tyz-rh-v40 > .tyz-nc-scene,
+#tyz-home-v21 .tyz-hero__media.tyz-rh-v40 > .tyz-ns-stage,
+#tyz-home-v21 .tyz-hero__media.tyz-rh-v40 > .tyz-pw-scene{
+  display:none!important;
+  visibility:hidden!important;
+  opacity:0!important;
+}
