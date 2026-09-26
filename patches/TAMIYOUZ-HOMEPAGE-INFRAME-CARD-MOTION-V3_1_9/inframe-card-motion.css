@@ -1,0 +1,214 @@
+/* TAMIYOUZ-HOMEPAGE-INFRAME-CARD-MOTION-V3_1_9 */
+
+/* V3.1.9 supersedes the two previous card overlay experiments. */
+#tyz-home-v21 .tyz-living-cards-v317 > .tyz-living-cards,
+#tyz-home-v21 .tyz-native-cards-v318 > .tyz-native-cards{
+  display:none!important;
+  visibility:hidden!important;
+  opacity:0!important;
+}
+
+/* One overlay layer, strictly clipped to the Hero image. */
+#tyz-home-v21 .tyz-hero__media.tyz-inframe-v319 > .tyz-inframe-cards{
+  display:block!important;
+  visibility:visible!important;
+  position:absolute!important;
+  inset:0!important;
+  z-index:42!important;
+  overflow:hidden!important;
+  border-radius:inherit!important;
+  pointer-events:none!important;
+}
+
+/* Each zone equals the real card/icon location in the approved raster. */
+#tyz-home-v21 .tyz-inframe-zone{
+  position:absolute;
+  overflow:hidden;
+  pointer-events:none;
+  border-radius:10px;
+  opacity:.72;
+  transition:opacity .28s ease,filter .28s ease;
+  filter:brightness(1);
+}
+#tyz-home-v21 .tyz-inframe-zone.is-awake,
+#tyz-home-v21 .tyz-inframe-zone.is-active{
+  opacity:1;
+  filter:brightness(1.045);
+}
+
+/* Coordinates taken from the rendered V3.1 Hero in the 2026-09-26 recording. */
+#tyz-home-v21 .tyz-inframe-zone--leads{
+  left:7.9%;
+  top:9.1%;
+  width:16.9%;
+  height:18.8%;
+  border-radius:10px 10px 9px 9px;
+}
+#tyz-home-v21 .tyz-inframe-zone--follow{
+  left:77.5%;
+  top:8.9%;
+  width:19.2%;
+  height:18.6%;
+  border-radius:10px;
+}
+#tyz-home-v21 .tyz-inframe-zone--instagram{
+  left:1.1%;
+  top:17.2%;
+  width:5.7%;
+  height:9.2%;
+  border-radius:8px;
+}
+#tyz-home-v21 .tyz-inframe-zone--tiktok{
+  left:1.1%;
+  top:26.3%;
+  width:5.7%;
+  height:9.2%;
+  border-radius:8px;
+}
+
+/* Wake glow remains INSIDE the real card/icon boundaries. */
+#tyz-home-v21 .tyz-inframe-zone__wash{
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(241,199,112,.17),transparent 48%),
+    linear-gradient(120deg,transparent 18%,rgba(255,255,255,.16) 48%,transparent 76%);
+  background-size:auto,260% 100%;
+  background-position:center,-120% 0;
+  opacity:.22;
+  transition:opacity .24s ease,background-position .7s ease;
+}
+#tyz-home-v21 .tyz-inframe-zone.is-awake .tyz-inframe-zone__wash,
+#tyz-home-v21 .tyz-inframe-zone.is-active .tyz-inframe-zone__wash{
+  opacity:.72;
+  background-position:center,120% 0;
+}
+
+/* Top-card metric patch is intentionally tiny and clipped inside the card. */
+#tyz-home-v21 .tyz-inframe-zone__metric{
+  position:absolute;
+  left:15%;
+  top:28%;
+  min-width:40%;
+  max-width:64%;
+  padding:1px 3px 2px;
+  border-radius:3px;
+  background:rgba(249,248,245,.80);
+  backdrop-filter:blur(1.6px);
+  color:#222428;
+  font:760 clamp(6px,.66vw,10px)/1 ui-monospace,SFMono-Regular,Menlo,monospace;
+  letter-spacing:-.045em;
+  text-align:left;
+}
+#tyz-home-v21 .tyz-inframe-zone__metric small{
+  margin-left:2px;
+  font-size:.42em;
+  letter-spacing:.04em;
+  color:rgba(34,36,40,.42);
+}
+#tyz-home-v21 .tyz-inframe-zone.is-ticking .tyz-inframe-zone__metric{
+  animation:tyzV319Tick .38s cubic-bezier(.2,.8,.2,1);
+}
+@keyframes tyzV319Tick{
+  0%{transform:translateY(0);opacity:1}
+  44%{transform:translateY(-2px);opacity:.34}
+  45%{transform:translateY(2px);opacity:.34}
+  100%{transform:translateY(0);opacity:1}
+}
+
+#tyz-home-v21 .tyz-inframe-zone__mini{
+  position:absolute;
+  left:15%;
+  right:11%;
+  bottom:15%;
+  height:18%;
+}
+#tyz-home-v21 .tyz-inframe-zone__mini svg{
+  width:100%;
+  height:100%;
+  overflow:visible;
+}
+#tyz-home-v21 .tyz-inframe-zone__mini polyline{
+  fill:none;
+  stroke:rgba(193,139,45,.78);
+  stroke-width:1.05;
+  vector-effect:non-scaling-stroke;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+  stroke-dasharray:80;
+  stroke-dashoffset:80;
+  animation:tyzV319Line 4s ease-in-out infinite;
+}
+@keyframes tyzV319Line{
+  0%,18%{stroke-dashoffset:80;opacity:.25}
+  50%,84%{stroke-dashoffset:0;opacity:.82}
+  100%{stroke-dashoffset:0;opacity:.32}
+}
+
+/* Social icon pulse remains centered INSIDE each existing icon tile. */
+#tyz-home-v21 .tyz-inframe-zone__social-pulse{
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:55%;
+  aspect-ratio:1;
+  transform:translate(-50%,-50%);
+  border-radius:50%;
+  border:1px solid rgba(222,174,86,.22);
+  box-shadow:0 0 0 0 rgba(222,174,86,.18);
+  opacity:.35;
+  animation:tyzV319Social 2.4s ease-out infinite;
+}
+#tyz-home-v21 .tyz-inframe-zone.is-awake .tyz-inframe-zone__social-pulse,
+#tyz-home-v21 .tyz-inframe-zone.is-active .tyz-inframe-zone__social-pulse{
+  opacity:.78;
+  animation-duration:1.35s;
+}
+@keyframes tyzV319Social{
+  0%{transform:translate(-50%,-50%) scale(.72);box-shadow:0 0 0 0 rgba(222,174,86,.22)}
+  68%{transform:translate(-50%,-50%) scale(1);box-shadow:0 0 0 7px rgba(222,174,86,0)}
+  100%{transform:translate(-50%,-50%) scale(.82);box-shadow:0 0 0 0 rgba(222,174,86,0)}
+}
+
+/* Local mouse response changes only contents inside the mask. Never translate the zone. */
+#tyz-home-v21 .tyz-inframe-zone__content{
+  position:absolute;
+  inset:0;
+  transform:translate3d(var(--ix,0px),var(--iy,0px),0);
+  transition:transform .26s cubic-bezier(.2,.8,.2,1);
+}
+#tyz-home-v21 .tyz-inframe-zone.is-active .tyz-inframe-zone__content{
+  transform:translate3d(var(--ix,0px),var(--iy,0px),0) scale(1.008);
+}
+
+html[data-tyz-theme="dark"] #tyz-home-v21 .tyz-inframe-zone__metric{
+  background:rgba(21,23,27,.78);
+  color:#f4f1eb;
+}
+html[data-tyz-theme="dark"] #tyz-home-v21 .tyz-inframe-zone__metric small{
+  color:rgba(244,241,235,.45);
+}
+
+@media(max-width:760px){
+  #tyz-home-v21 .tyz-inframe-zone__metric,
+  #tyz-home-v21 .tyz-inframe-zone__mini{
+    display:none;
+  }
+}
+@media(hover:none),(pointer:coarse){
+  #tyz-home-v21 .tyz-inframe-zone__content{
+    transform:none!important;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  #tyz-home-v21 .tyz-inframe-zone,
+  #tyz-home-v21 .tyz-inframe-zone__wash,
+  #tyz-home-v21 .tyz-inframe-zone__metric,
+  #tyz-home-v21 .tyz-inframe-zone__mini polyline,
+  #tyz-home-v21 .tyz-inframe-zone__social-pulse,
+  #tyz-home-v21 .tyz-inframe-zone__content{
+    animation:none!important;
+    transition:none!important;
+    transform:none!important;
+  }
+}
