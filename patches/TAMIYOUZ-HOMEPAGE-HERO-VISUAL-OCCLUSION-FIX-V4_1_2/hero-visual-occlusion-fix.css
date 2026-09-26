@@ -1,0 +1,46 @@
+/* TAMIYOUZ-HOMEPAGE-HERO-VISUAL-OCCLUSION-FIX-V4_1_2 */
+
+/* Person safe-zone lock for the photorealistic V4 Hero. */
+#tyz-home-v21 .tyz-rh-v40 .tyz-rh-kpi--traffic{
+  left:24.5%!important;
+  top:2.6%!important;
+}
+#tyz-home-v21 .tyz-rh-v40 .tyz-rh-kpi--sales{
+  left:43.1%!important;
+  top:2.2%!important;
+}
+#tyz-home-v21 .tyz-rh-v40 .tyz-rh-kpi--users{
+  left:60.5%!important;
+  top:2.4%!important;
+}
+#tyz-home-v21 .tyz-rh-v40 .tyz-rh-kpi--conversion{
+  left:79.4%!important;
+  top:3.2%!important;
+}
+
+/* Keep card effects inside each KPI surface so glow/shadow never spills onto the person. */
+#tyz-home-v21 .tyz-rh-v40 .tyz-rh-kpi{
+  overflow:hidden!important;
+  contain:paint;
+}
+#tyz-home-v21 .tyz-rh-v40 .tyz-rh-kpi:before,
+#tyz-home-v21 .tyz-rh-v40 .tyz-rh-kpi:after{
+  clip-path:inset(0 round 12px);
+}
+
+/* Prevent pointer/glow effects from escaping the intended KPI / monitor zones. */
+#tyz-home-v21 .tyz-rh-v40 .tyz-rh-kpis{
+  overflow:hidden!important;
+}
+#tyz-home-v21 .tyz-rh-v40 .tyz-rh-glass{
+  background:
+    linear-gradient(115deg,rgba(255,255,255,.035),transparent 28%,transparent 68%,rgba(101,158,238,.018))!important;
+}
+
+/* Never allow motion to move KPI cards into the person safe zone. */
+#tyz-home-v21 .tyz-rh-v40 .tyz-rh-kpi.is-rh-awake{
+  transform:translate3d(0,-2px,0)!important;
+}
+#tyz-home-v21 .tyz-rh-v40 .tyz-rh-kpi.is-rh-hover{
+  transform:translate3d(0,-3px,0)!important;
+}
