@@ -1,0 +1,180 @@
+/* TAMIYOUZ-HOMEPAGE-REALISTIC-HERO-ANIMATION-SYSTEM-V4_1 */
+
+#tyz-home-v21 .tyz-rh-v40{
+  --rh-mx:50%;
+  --rh-my:50%;
+}
+
+/* Keep the physical scene completely static. */
+#tyz-home-v21 .tyz-rh-v40 > .tyz-rh-photo{
+  transform:none!important;
+  transition:none!important;
+}
+
+/* KPI component motion happens inside the real DOM cards. */
+#tyz-home-v21 .tyz-rh-kpi{
+  transform:translate3d(0,0,0);
+  transition:
+    transform .34s cubic-bezier(.2,.8,.2,1),
+    border-color .34s ease,
+    box-shadow .34s ease,
+    background .34s ease;
+}
+#tyz-home-v21 .tyz-rh-kpi:before{
+  content:"";
+  position:absolute;
+  inset:-35% auto -35% -38%;
+  width:28%;
+  opacity:0;
+  pointer-events:none;
+  transform:skewX(-15deg);
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.19),transparent);
+}
+#tyz-home-v21 .tyz-rh-kpi.is-rh-awake{
+  transform:translate3d(0,-2px,0);
+  border-color:rgba(151,190,239,.42);
+  box-shadow:0 18px 38px rgba(4,10,19,.25),inset 0 1px 0 rgba(255,255,255,.1);
+}
+#tyz-home-v21 .tyz-rh-kpi.is-rh-awake:before{
+  opacity:1;
+  animation:tyzRh41Sweep .72s ease both;
+}
+#tyz-home-v21 .tyz-rh-kpi.is-rh-hover{
+  transform:translate3d(0,-3px,0);
+  box-shadow:0 20px 42px rgba(4,10,19,.28),0 0 0 1px rgba(105,165,244,.11) inset;
+}
+@keyframes tyzRh41Sweep{
+  from{transform:translateX(0) skewX(-15deg)}
+  to{transform:translateX(560%) skewX(-15deg)}
+}
+
+/* Draw/re-draw the actual sparkline paths. */
+#tyz-home-v21 .tyz-rh-kpi svg path{
+  stroke-dasharray:210;
+  stroke-dashoffset:0;
+}
+#tyz-home-v21 .tyz-rh-kpi.is-rh-awake svg path{
+  animation:tyzRh41Line 1s ease both;
+}
+@keyframes tyzRh41Line{
+  from{stroke-dashoffset:210;opacity:.3}
+  to{stroke-dashoffset:0;opacity:1}
+}
+
+/* Screen-local highlight only. The mapped screen boxes do not move. */
+#tyz-home-v21 .tyz-rh-screen{
+  transform-origin:center;
+  transition:border-color .3s ease,box-shadow .3s ease;
+}
+#tyz-home-v21 .tyz-rh-screen:after{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:30;
+  pointer-events:none;
+  opacity:0;
+  background:
+    radial-gradient(circle at var(--rh-local-x,50%) var(--rh-local-y,50%),rgba(103,161,244,.11),transparent 34%),
+    linear-gradient(112deg,transparent 0 36%,rgba(255,255,255,.055) 48%,transparent 60% 100%);
+  mix-blend-mode:screen;
+  transition:opacity .25s ease;
+}
+#tyz-home-v21 .tyz-rh-screen.is-rh-screen-active{
+  border-color:rgba(124,166,226,.22);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.03),0 0 25px rgba(42,103,184,.12);
+}
+#tyz-home-v21 .tyz-rh-screen.is-rh-screen-active:after{opacity:1}
+
+/* Main trend */
+#tyz-home-v21 .tyz-rh-trend__line{
+  stroke-dasharray:520;
+  stroke-dashoffset:0;
+}
+#tyz-home-v21 .tyz-rh-screen--main.is-rh-cycle .tyz-rh-trend__line{
+  animation:tyzRh41Trend 1.35s ease both;
+}
+@keyframes tyzRh41Trend{
+  from{stroke-dashoffset:520;opacity:.25}
+  to{stroke-dashoffset:0;opacity:1}
+}
+
+/* Bars are the same native bars, only their heights change. */
+#tyz-home-v21 .tyz-rh-bars i{
+  transition:height .85s cubic-bezier(.18,.76,.25,1),filter .35s ease;
+}
+#tyz-home-v21 .tyz-rh-screen--main.is-rh-cycle .tyz-rh-bars i{
+  filter:drop-shadow(0 0 5px rgba(95,153,245,.16));
+}
+
+/* Workflow sequence */
+#tyz-home-v21 .tyz-rh-workflow article{
+  transition:background .28s ease,border-color .28s ease,box-shadow .28s ease;
+}
+#tyz-home-v21 .tyz-rh-workflow article>span{
+  transition:box-shadow .28s ease,background .28s ease;
+}
+#tyz-home-v21 .tyz-rh-workflow article.is-rh-step-active{
+  background:rgba(255,255,255,.075);
+  border-color:rgba(103,161,244,.22);
+  box-shadow:0 6px 16px rgba(0,0,0,.12);
+}
+#tyz-home-v21 .tyz-rh-workflow article.is-rh-step-active>span{
+  background:#d5a14a;
+  animation:tyzRh41Pulse 1.05s ease-out;
+}
+@keyframes tyzRh41Pulse{
+  0%{box-shadow:0 0 0 0 rgba(213,161,74,.34)}
+  72%{box-shadow:0 0 0 7px rgba(213,161,74,0)}
+  100%{box-shadow:0 0 0 0 rgba(213,161,74,0)}
+}
+
+/* Channel rows wake locally. */
+#tyz-home-v21 .tyz-rh-source-list span{
+  transition:background .26s ease,border-color .26s ease,box-shadow .26s ease;
+}
+#tyz-home-v21 .tyz-rh-source-list span.is-rh-source-active{
+  background:rgba(255,255,255,.075);
+  border-color:rgba(97,159,244,.18);
+  box-shadow:0 5px 14px rgba(0,0,0,.1);
+}
+#tyz-home-v21 .tyz-rh-source-list span.is-rh-source-active i{
+  box-shadow:0 0 0 6px rgba(99,156,246,0);
+  animation:tyzRh41Source 1s ease-out;
+}
+@keyframes tyzRh41Source{
+  from{box-shadow:0 0 0 0 rgba(99,156,246,.28)}
+  to{box-shadow:0 0 0 7px rgba(99,156,246,0)}
+}
+
+/* Numeric update micro-feedback. */
+#tyz-home-v21 [data-rh-value],
+#tyz-home-v21 [data-rh-metric]{
+  transition:opacity .16s ease,transform .16s ease;
+}
+#tyz-home-v21 .is-rh-value-change{
+  opacity:.72;
+  transform:translateY(-1px);
+}
+
+/* Desktop only: mobile keeps the photorealistic V4 base stable. */
+@media(max-width:760px){
+  #tyz-home-v21 .tyz-rh-kpi,
+  #tyz-home-v21 .tyz-rh-screen,
+  #tyz-home-v21 .tyz-rh-bars i,
+  #tyz-home-v21 [data-rh-value],
+  #tyz-home-v21 [data-rh-metric]{
+    animation:none!important;
+    transition:none!important;
+    transform:none!important;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  #tyz-home-v21 .tyz-rh-v40 *,
+  #tyz-home-v21 .tyz-rh-v40 *:before,
+  #tyz-home-v21 .tyz-rh-v40 *:after{
+    animation:none!important;
+    transition:none!important;
+    transform:none!important;
+  }
+}
